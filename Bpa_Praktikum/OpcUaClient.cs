@@ -38,57 +38,44 @@ namespace Bpa_Praktikum
             Session.KeepAlive += Client_KeepAlive;
 
             Console.WriteLine("Create a subscription with publishing interval of 1 second.");
-            //Erstelle eine Instanz des Subscription Objekts mit einem Publishing Interval von 1000
-            //Die Subscription soll die Defaultsubscription des Session Objektes sein
             var subscription = new Subscription(Session.DefaultSubscription) { PublishingInterval = 1000 };
 
             Console.WriteLine("Add a list of items (server current time and status) to the subscription.");
-            //Erstelle eine Liste von Monitored Items, Jedes Item wird mit dem subscription.DefaultItem parameter instanziiert
+            //Erstelle eine Liste von Monitored Items (subscriptionList).
+            //Jedes Item wird mit dem subscription.DefaultItem-Parameter instanziiert
             //und kann als Parameter DisplayName und StartNodeId besitzen.
             //Die StartNodeIds sind in der Sensor Klasse hinterlegt und können genutzt werden.
-            //Überlege dir, welche Nodes für die Messung der Zeiten des Prozesses wichtig sind. 
-            var subscriptionList = new List<MonitoredItem> {
-                new MonitoredItem(subscription.DefaultItem)
-                {
-                    DisplayName = "Bg30", StartNodeId = Sensors.Bg30
-                },new MonitoredItem(subscription.DefaultItem)
-                {
-                    DisplayName = "Bg31", StartNodeId = Sensors.Bg31
-                }
-            };
+            //Überlege dir, welche Nodes für die Messung der Zeiten des Prozesses wichtig sind.
+
+
+
             //iteriere über die gesamte SubscriptionList
             //und füge dem Notification Property jedes Monitored Items den OnNotification Eventhandler hinzu
-            subscriptionList.ForEach(i => i.Notification += OnNotification);
+
+
+
+
             //füge der subscription die subscriptionList hinzu
-            subscription.AddItems(subscriptionList);
+
 
             Console.WriteLine("Add the subscription to the session.");
             //füge der Session die subscription hinzu
-            Session.AddSubscription(subscription);
+
+
+
             subscription.Create();
             Console.WriteLine("Running...Press Ctrl-C to exit...");
         }
 
         private void OnNotification(MonitoredItem item, MonitoredItemNotificationEventArgs e)
         {
-            //Überprüfe, welche Node sich ändert.
             //Messe anhand des Bg30 und Bg31 den kompletten Prozess und gib die Zeit aus.
             //Wenn Bg31 true --> TimeTracker.Start()
             //Wenn Bg30 true --> TimeTracker.Stop()
-            
+            //Implementiere in die Time Tracker Klasse eine Funktion, welche die Differenz der Start-und Endzeit ausgibt
             foreach (var value in item.DequeueValues())
             {
                 Console.WriteLine("{0}: {1}, {2}, {3}", item.DisplayName, value.Value, value.SourceTimestamp, value.StatusCode);
-            
-                if(item.StartNodeId.ToString() == Sensors.Bg31 && (bool)value.Value)
-                {
-                    Console.WriteLine($"Start: {TimeTracker.Start()}");
-                }
-                else if(item.StartNodeId.ToString() == Sensors.Bg30 && (bool)value.Value)
-                {
-                    Console.WriteLine($"End: {TimeTracker.Stop()}");
-                    Console.WriteLine($"Difference: {TimeTracker.GetDifference()}");
-                }
             }
         }
         #region Run

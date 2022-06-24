@@ -27,10 +27,5 @@ namespace Bpa_Praktikum
             EndTime = DateTime.Now;
             return EndTime;
         }
-
-        public TimeSpan GetDifference()
-        {
-            return EndTime - StartTime;
-        }
     }
 }
