@@ -51,6 +51,9 @@ namespace Bpa_Praktikum
                 new MonitoredItem(subscription.DefaultItem)
                 {
                     DisplayName = "Bg30", StartNodeId = Sensors.Bg30
+                },new MonitoredItem(subscription.DefaultItem)
+                {
+                    DisplayName = "Bg31", StartNodeId = Sensors.Bg31
                 }
             };
             //iteriere über die gesamte SubscriptionList
@@ -77,13 +80,13 @@ namespace Bpa_Praktikum
             {
                 Console.WriteLine("{0}: {1}, {2}, {3}", item.DisplayName, value.Value, value.SourceTimestamp, value.StatusCode);
             
-                if(item.StartNodeId == Sensors.Bg30 && (bool)value.Value)
+                if(item.StartNodeId.ToString() == Sensors.Bg31 && (bool)value.Value)
                 {
                     Console.WriteLine($"Start: {TimeTracker.Start()}");
                 }
-                else if(item.StartNodeId == Sensors.Bg31 && (bool)value.Value)
+                else if(item.StartNodeId.ToString() == Sensors.Bg30 && (bool)value.Value)
                 {
-                    Console.WriteLine($"Start: {TimeTracker.Stop()}");
+                    Console.WriteLine($"End: {TimeTracker.Stop()}");
                     Console.WriteLine($"Difference: {TimeTracker.GetDifference()}");
                 }
             }
