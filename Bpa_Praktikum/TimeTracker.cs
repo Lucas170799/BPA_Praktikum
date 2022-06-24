@@ -22,10 +22,15 @@ namespace Bpa_Praktikum
             return StartTime;
         }
 
-        public TimeSpan Stop()
+        public DateTime Stop()
         {
             EndTime = DateTime.Now;
-            return EndTime-StartTime;
+            return EndTime;
+        }
+
+        public TimeSpan GetDifference()
+        {
+            return EndTime - StartTime;
         }
     }
 }

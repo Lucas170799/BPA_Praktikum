@@ -72,10 +72,20 @@ namespace Bpa_Praktikum
             //Messe anhand des Bg30 und Bg31 den kompletten Prozess und gib die Zeit aus.
             //Wenn Bg31 true --> TimeTracker.Start()
             //Wenn Bg30 true --> TimeTracker.Stop()
-
+            
             foreach (var value in item.DequeueValues())
             {
                 Console.WriteLine("{0}: {1}, {2}, {3}", item.DisplayName, value.Value, value.SourceTimestamp, value.StatusCode);
+            
+                if(item.StartNodeId == Sensors.Bg30 && (bool)value.Value)
+                {
+                    Console.WriteLine($"Start: {TimeTracker.Start()}");
+                }
+                else if(item.StartNodeId == Sensors.Bg31 && (bool)value.Value)
+                {
+                    Console.WriteLine($"Start: {TimeTracker.Stop()}");
+                    Console.WriteLine($"Difference: {TimeTracker.GetDifference()}");
+                }
             }
         }
         #region Run
